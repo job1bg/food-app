@@ -45,7 +45,28 @@ function cartReducer(
     }
 
     case "REMOVE_ITEM": {
-      const updatedItems = state.items.filter((item) => item.id !== action.id);
+      const existingItemIndex = state.items.findIndex(
+        (item) => item.id === action.id
+      );
+
+      if (existingItemIndex === -1) {
+        return state; // Item not found, no changes
+      }
+
+      const updatedItems = [...state.items];
+      const existingItem = updatedItems[existingItemIndex];
+
+      if (existingItem.quantity > 1) {
+        // Decrease quantity by 1 if greater than 1
+        updatedItems[existingItemIndex] = {
+          ...existingItem,
+          quantity: existingItem.quantity - 1,
+        };
+      } else {
+        // Remove item if quantity is 1
+        updatedItems.splice(existingItemIndex, 1);
+      }
+
       return { items: updatedItems };
     }
 
