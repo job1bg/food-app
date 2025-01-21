@@ -1,4 +1,4 @@
-import { currencyFormatter } from "../../util/formatting";
+import { currencyFormatter } from "../util/formatting";
 
 const CartItem: React.FC<{
   name: string;

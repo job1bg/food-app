@@ -3,6 +3,7 @@ import { Meal } from "src/interfaces/meal";
 
 type CartAction =
   | { type: "ADD_ITEM"; item: Meal }
+  | { type: "CLEAR_CART" }
   | { type: "REMOVE_ITEM"; id: string };
 
 interface CartState {
@@ -13,10 +14,12 @@ const CartContext = createContext<{
   items: Meal[];
   addItem: (item: Meal) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
 }>({
   items: [],
   addItem: () => {},
   removeItem: () => {},
+  clearCart: () => {},
 });
 
 function cartReducer(
@@ -70,6 +73,10 @@ function cartReducer(
       return { items: updatedItems };
     }
 
+    case "CLEAR_CART": {
+      return { ...state, items: [] };
+    }
+
     default:
       return state;
   }
@@ -88,8 +95,14 @@ const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatchCartAction({ type: "REMOVE_ITEM", id });
   };
 
+  const clearCart = () => {
+    dispatchCartAction({ type: "CLEAR_CART" });
+  };
+
   return (
-    <CartContext.Provider value={{ items: cart.items, addItem, removeItem }}>
+    <CartContext.Provider
+      value={{ items: cart.items, addItem, removeItem, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

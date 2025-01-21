@@ -4,8 +4,9 @@ import { createPortal } from "react-dom";
 const Modal: React.FC<{
   children?: React.ReactNode;
   open?: boolean;
-  className: string;
-}> = ({ children, open, className = "" }) => {
+  className?: string;
+  onClose: () => void | null;
+}> = ({ children, open, className = "", onClose }) => {
   const dialog = useRef<HTMLDialogElement | null>(null);
   useEffect(() => {
     const modal = dialog.current;
@@ -18,7 +19,7 @@ const Modal: React.FC<{
     }
   }, [open]);
   return createPortal(
-    <dialog ref={dialog} className={`modal ${className}`}>
+    <dialog ref={dialog} className={`modal ${className}`} onClose={onClose}>
       {children}
     </dialog>,
     document.getElementById("modal")!

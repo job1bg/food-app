@@ -21,7 +21,7 @@ export default function Meals() {
 
   return (
     <ul id="meals">
-      {loadedMeals.map((meal) => (
+      {loadedMeals.map((meal: Meal) => (
         <MealItem key={meal.id} meal={meal} />
       ))}
     </ul>
